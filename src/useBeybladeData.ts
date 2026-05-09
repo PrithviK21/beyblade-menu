@@ -17,13 +17,16 @@ const resolveBeyType = (ID: string): IBeybladeType => {
   return splitArr[0] as IBeybladeType;
 };
 
+// TODO: Update app to work with CXE beys
 const transformBeybladeData = (parsedCSV: IparsedCSV): IBeybladeData => {
-  const filteredList = parsedCSV.map((row) => ({
-    id: row.ID,
-    series: row.Series,
-    name: row.Name,
-    type: resolveBeyType(row.ID),
-  }));
+  const filteredList = parsedCSV
+    .map((row) => ({
+      id: row.ID,
+      series: row.Series,
+      name: row.Name,
+      type: resolveBeyType(row.ID),
+    }))
+    .filter((bey) => bey.type !== "CXE");
   return filteredList;
 };
 export const useBeybladeData = () => {

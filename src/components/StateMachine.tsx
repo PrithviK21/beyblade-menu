@@ -1,15 +1,19 @@
 import { useState } from "react";
 import { STEPS, isValidStep } from "../constants";
-import { useBeybladeDataContext } from "../context/beybladeDataContext";
-import { ChangeStepButton } from "./common/ChangeStepsButton";
 import TypeRoll from "./X/TypeRoll";
 import BladeRoll from "./X/BladeRoll";
 import RatchetRoll from "./X/RatchetRoll";
 import BitRoll from "./X/BitRoll";
 import Result from "./Result";
+import LockChipRoll from "./X/LockChipRoll";
+import MainBladeRoll from "./X/MainBladeRoll";
+import AssistBladeRoll from "./X/AssistBladeRoll";
+import EnergyRingRoll from "./MF/EnergyRingRoll";
+import FusionWheelRoll from "./MF/FusionWheelRoll";
+import SpinTrackRoll from "./MF/SpinTrackRoll";
+import PerformanceTipRoll from "./MF/PerformanceTipRoll";
 
 function StateMachine({ firstStep, id }) {
-  const { partsList } = useBeybladeDataContext();
   const [currentStep, setCurrentStep] = useState(firstStep);
   const changeCurrentStep = (newStep: string) => {
     if (isValidStep(newStep, STEPS)) {
@@ -20,101 +24,46 @@ function StateMachine({ firstStep, id }) {
     }
   };
 
+  const props = { id, changeCurrentStep };
+
   // Beyblade X Logic
   if (currentStep === STEPS.X.TYPE_ROLL) {
-    return <TypeRoll id={id} changeCurrentStep={changeCurrentStep} />;
+    return <TypeRoll {...props} />;
   }
   if (currentStep === STEPS.X.UX.BLADE) {
-    return (
-      <BladeRoll id={id} type="UX" changeCurrentStep={changeCurrentStep} />
-    );
+    return <BladeRoll type="UX" {...props} />;
   }
   if (currentStep === STEPS.X.BX.BLADE) {
-    return (
-      <BladeRoll id={id} type="BX" changeCurrentStep={changeCurrentStep} />
-    );
+    return <BladeRoll type="BX" {...props} />;
   }
   if (currentStep === STEPS.X.CX.LOCK_CHIP) {
-    return (
-      <div>
-        CX Lock chip
-        <ChangeStepButton
-          changeStep={changeCurrentStep}
-          step={STEPS.X.CX.MAIN_BLADE}
-        />
-      </div>
-    );
+    return <LockChipRoll {...props} />;
   }
   if (currentStep === STEPS.X.CX.MAIN_BLADE) {
-    return (
-      <div>
-        CX Main Blade
-        <ChangeStepButton
-          changeStep={changeCurrentStep}
-          step={STEPS.X.CX.ASSIST_BLADE}
-        />
-      </div>
-    );
+    return <MainBladeRoll {...props} />;
   }
   if (currentStep === STEPS.X.CX.ASSIST_BLADE) {
-    return (
-      <div>
-        CX Assist Blade
-        <ChangeStepButton
-          changeStep={changeCurrentStep}
-          step={STEPS.X.COMMON.RATCHET}
-        />
-      </div>
-    );
+    return <AssistBladeRoll {...props} />;
   }
   if (currentStep === STEPS.X.COMMON.RATCHET) {
-    return <RatchetRoll id={id} changeCurrentStep={changeCurrentStep} />;
+    return <RatchetRoll {...props} />;
   }
   if (currentStep === STEPS.X.COMMON.BIT) {
-    return <BitRoll id={id} changeCurrentStep={changeCurrentStep} />;
+    return <BitRoll {...props} />;
   }
 
   //MF Logic
   if (currentStep === STEPS.MF.ENERGY_RING) {
-    return (
-      <div>
-        MF Energy Ring
-        <ChangeStepButton
-          changeStep={changeCurrentStep}
-          step={STEPS.MF.SPIN_TRACK}
-        />
-      </div>
-    );
+    return <EnergyRingRoll {...props} />;
   }
   if (currentStep === STEPS.MF.FUSION_WHEEL) {
-    return (
-      <div>
-        MF Fusion Wheel
-        <ChangeStepButton
-          changeStep={changeCurrentStep}
-          step={STEPS.MF.ENERGY_RING}
-        />
-      </div>
-    );
+    return <FusionWheelRoll {...props} />;
   }
   if (currentStep === STEPS.MF.SPIN_TRACK) {
-    return (
-      <div>
-        MF Spin Track
-        <ChangeStepButton
-          changeStep={changeCurrentStep}
-          step={STEPS.MF.PERFORMANCE_TIP}
-        />
-      </div>
-    );
+    return <SpinTrackRoll {...props} />;
   }
   if (currentStep === STEPS.MF.PERFORMANCE_TIP) {
-    return (
-      <div>
-        MF Performance Tip
-        <ChangeStepButton changeStep={changeCurrentStep} step={STEPS.END} />
-      </div>
-    );
+    return <PerformanceTipRoll {...props} />;
   }
   if (currentStep === STEPS.END) {
     return <Result id={id} />;

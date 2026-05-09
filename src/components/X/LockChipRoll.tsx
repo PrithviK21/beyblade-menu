@@ -2,19 +2,19 @@ import { STEPS } from "../../constants";
 import { useBeybladeDataContext } from "../../context/beybladeDataContext";
 import RollWrapper from "../common/RollWrapper";
 
-function BitRoll({ id, changeCurrentStep }) {
+function LockChipRoll({ id, changeCurrentStep }) {
   const { partsList } = useBeybladeDataContext();
 
   return (
     <RollWrapper
-      partLabel={"Bit"}
-      partType={"BIT"}
-      partList={partsList.X.COMMON.BIT}
+      partLabel={"Lock Chip"}
+      partType={"LOCK_CHIP"}
+      partList={partsList.X.CX.LOCK_CHIP}
       changeCurrentStep={changeCurrentStep}
       id={id}
-      nextStep={STEPS.END}
+      nextStep={STEPS.X.CX.MAIN_BLADE}
     />
   );
 }
 
-export default BitRoll;
+export default LockChipRoll;

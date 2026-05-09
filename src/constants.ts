@@ -7,6 +7,8 @@ export const STEPS = {
       LOCK_CHIP: "Lock Chip",
       MAIN_BLADE: "Main Blade",
       ASSIST_BLADE: "Assist Blade",
+      OVER_BLADE: "Over Blade",
+      METAL_BLADE: "Metal Blade",
     },
     UX: {
       BLADE: "UX Blade",

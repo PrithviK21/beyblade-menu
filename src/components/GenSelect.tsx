@@ -13,7 +13,7 @@ function GenSelect({ changeCurrentStep }) {
       />
       <ChangeStepButton
         changeStep={changeCurrentStep}
-        step={STEPS.MF.FUSION_WHEEL}
+        step={STEPS.MF.ENERGY_RING}
         overrideText={"Metal Saga"}
       />
     </div>

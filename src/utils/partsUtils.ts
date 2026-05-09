@@ -8,13 +8,13 @@ const generatePartList = (beyblades: IBeybladeData) => {
   let partList: IPartList = {
     X: {
       CX: {
+        LOCK_CHIP: [],
         MAIN_BLADE: [],
         ASSIST_BLADE: [],
       },
       CXE: {
         METAL_BLADE: [],
         OVER_BLADE: [],
-        ASSIST_BLADE: [],
       },
       BX: {
         BLADE: [],
@@ -48,13 +48,15 @@ const generatePartList = (beyblades: IBeybladeData) => {
       } else if (parts.type === "UX") {
         pushIfNotPresent(parts.blade, partList.X.UX.BLADE);
       } else if (parts.type === "CX") {
+        pushIfNotPresent(parts.lockChip, partList.X.CX.LOCK_CHIP);
         pushIfNotPresent(parts.mainBlade, partList.X.CX.MAIN_BLADE);
         pushIfNotPresent(parts.assistBlade, partList.X.CX.ASSIST_BLADE);
         // TODO: See if this should be moved elsewhere
         pushIfNotPresent(parts.ratchetIntegratedBit, partList.X.COMMON.RATCHET);
       } else if (parts.type === "CXE") {
+        pushIfNotPresent(parts.lockChip, partList.X.CX.LOCK_CHIP);
         pushIfNotPresent(parts.metalBlade, partList.X.CXE.METAL_BLADE);
-        pushIfNotPresent(parts.assistBlade, partList.X.CXE.ASSIST_BLADE);
+        pushIfNotPresent(parts.assistBlade, partList.X.CX.ASSIST_BLADE);
         pushIfNotPresent(parts.overBlade, partList.X.CXE.OVER_BLADE);
         // TODO: See if this should be moved elsewhere
         pushIfNotPresent(parts.ratchetIntegratedBit, partList.X.COMMON.RATCHET);

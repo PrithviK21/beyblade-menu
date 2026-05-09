@@ -2,6 +2,10 @@ import { useState } from "react";
 import "./App.css";
 import GenSelect from "./components/GenSelect";
 import StateMachine from "./components/StateMachine";
+import {
+  resetState,
+  useBeybladeDataContext,
+} from "./context/beybladeDataContext";
 
 /**
  * What is my vision?
@@ -29,7 +33,7 @@ import StateMachine from "./components/StateMachine";
 
 function App() {
   const [gen, setGen] = useState("");
-
+  const { dispatch } = useBeybladeDataContext();
   if (!gen) {
     return <GenSelect changeCurrentStep={setGen} />;
   }
@@ -41,7 +45,14 @@ function App() {
       <div>
         <StateMachine firstStep={gen} id={2} />
       </div>
-      <button onClick={() => setGen("")}>Restart</button>
+      <button
+        onClick={() => {
+          dispatch(resetState());
+          setGen("");
+        }}
+      >
+        Restart
+      </button>
     </div>
   );
 }
