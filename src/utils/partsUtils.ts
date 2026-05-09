@@ -90,7 +90,7 @@ const extractParts = (beyblade: IBeyblade) => {
 };
 
 const getRandomNumber = (max: number) => {
-  return Math.ceil(Math.random() * (max + 1));
+  return Math.ceil(Math.random() * max);
 };
 
 const getRandomItem = (arr: string[]): string => {

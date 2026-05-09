@@ -1,11 +1,7 @@
 import { useState } from "react";
 import "./App.css";
-import { useBeybladeDataContext } from "./context/beybladeDataContext";
-import Home from "./components/Home";
 import GenSelect from "./components/GenSelect";
-import TypeRoll from "./components/X/TypeRoll";
-import { ChangeStepButton } from "./components/common/ChangeStepsButton";
-import { isValidStep, STEPS } from "./constants";
+import StateMachine from "./components/StateMachine";
 
 /**
  * What is my vision?
@@ -32,152 +28,20 @@ import { isValidStep, STEPS } from "./constants";
  */
 
 function App() {
-  const { partsList } = useBeybladeDataContext();
-  const [currentStep, setCurrentStep] = useState(STEPS.X.TYPE_ROLL);
-  const changeCurrentStep = (newStep: string) => {
-    if (isValidStep(newStep, STEPS)) {
-      setCurrentStep(newStep);
-      console.log(newStep);
-    } else {
-      throw new Error(`Invalid Step ${newStep}`);
-    }
-  };
+  const [gen, setGen] = useState("");
 
-  if (currentStep === STEPS.HOME) {
-    return <Home changeCurrentStep={changeCurrentStep} />;
-  }
-  if (currentStep === STEPS.GEN_SELECT) {
-    return <GenSelect changeCurrentStep={changeCurrentStep} />;
-  }
-  // Beyblade X Logic
-  if (currentStep === STEPS.X.TYPE_ROLL) {
-    return <TypeRoll changeCurrentStep={changeCurrentStep} />;
-  }
-  if (currentStep === STEPS.X.UX.BLADE) {
-    return (
-      <div>
-        UX blade
-        <ChangeStepButton
-          changeStep={changeCurrentStep}
-          step={STEPS.X.COMMON.RATCHET}
-        />
-      </div>
-    );
-  }
-  if (currentStep === STEPS.X.BX.BLADE) {
-    return (
-      <div>
-        BX blade
-        <ChangeStepButton
-          changeStep={changeCurrentStep}
-          step={STEPS.X.COMMON.RATCHET}
-        />
-      </div>
-    );
-  }
-  if (currentStep === STEPS.X.CX.LOCK_CHIP) {
-    return (
-      <div>
-        CX Lock chip
-        <ChangeStepButton
-          changeStep={changeCurrentStep}
-          step={STEPS.X.CX.MAIN_BLADE}
-        />
-      </div>
-    );
-  }
-  if (currentStep === STEPS.X.CX.MAIN_BLADE) {
-    return (
-      <div>
-        CX Main Blade
-        <ChangeStepButton
-          changeStep={changeCurrentStep}
-          step={STEPS.X.CX.ASSIST_BLADE}
-        />
-      </div>
-    );
-  }
-  if (currentStep === STEPS.X.CX.ASSIST_BLADE) {
-    return (
-      <div>
-        CX Assist Blade
-        <ChangeStepButton
-          changeStep={changeCurrentStep}
-          step={STEPS.X.COMMON.RATCHET}
-        />
-      </div>
-    );
-  }
-  if (currentStep === STEPS.X.COMMON.RATCHET) {
-    return (
-      <div>
-        Ratchet
-        <ChangeStepButton
-          changeStep={changeCurrentStep}
-          step={STEPS.X.COMMON.BIT}
-        />
-      </div>
-    );
-  }
-  if (currentStep === STEPS.X.COMMON.BIT) {
-    return (
-      <div>
-        Bit - skipped if ratchet integrated bit is rolled
-        <ChangeStepButton changeStep={changeCurrentStep} step={STEPS.END} />
-      </div>
-    );
-  }
-
-  //MF Logic
-  if (currentStep === STEPS.MF.ENERGY_RING) {
-    return (
-      <div>
-        MF Energy Ring
-        <ChangeStepButton
-          changeStep={changeCurrentStep}
-          step={STEPS.MF.SPIN_TRACK}
-        />
-      </div>
-    );
-  }
-  if (currentStep === STEPS.MF.FUSION_WHEEL) {
-    return (
-      <div>
-        MF Fusion Wheel
-        <ChangeStepButton
-          changeStep={changeCurrentStep}
-          step={STEPS.MF.ENERGY_RING}
-        />
-      </div>
-    );
-  }
-  if (currentStep === STEPS.MF.SPIN_TRACK) {
-    return (
-      <div>
-        MF Spin Track
-        <ChangeStepButton
-          changeStep={changeCurrentStep}
-          step={STEPS.MF.PERFORMANCE_TIP}
-        />
-      </div>
-    );
-  }
-  if (currentStep === STEPS.MF.PERFORMANCE_TIP) {
-    return (
-      <div>
-        MF Performance Tip
-        <ChangeStepButton changeStep={changeCurrentStep} step={STEPS.END} />
-      </div>
-    );
+  if (!gen) {
+    return <GenSelect changeCurrentStep={setGen} />;
   }
   return (
     <div>
-      Ollo
-      <ChangeStepButton
-        changeStep={changeCurrentStep}
-        step={STEPS.HOME}
-        overrideText="Restart"
-      />
+      <div>
+        <StateMachine firstStep={gen} id={1} />
+      </div>
+      <div>
+        <StateMachine firstStep={gen} id={2} />
+      </div>
+      <button onClick={() => setGen("")}>Restart</button>
     </div>
   );
 }

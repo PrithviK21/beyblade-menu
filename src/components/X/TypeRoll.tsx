@@ -2,6 +2,10 @@ import React, { useState } from "react";
 import { ChangeStepButton } from "../common/ChangeStepsButton";
 import { getRandomItem, rollSimulator } from "../../utils/partsUtils";
 import { STEPS } from "../../constants";
+import {
+  addTypeToGeneratedBeyblade,
+  useBeybladeDataContext,
+} from "../../context/beybladeDataContext";
 
 const lines = ["UX", "BX", "CX"];
 const stepMap: Record<string, string> = {
@@ -10,19 +14,24 @@ const stepMap: Record<string, string> = {
   CX: STEPS.X.CX.LOCK_CHIP,
 };
 
-function TypeRoll({ changeCurrentStep }) {
-  const [type, setType] = useState<string | null>(null);
+function TypeRoll({ id, changeCurrentStep }) {
+  const { getGeneratedBeyblade, dispatch } = useBeybladeDataContext();
 
-  const handleRoll = () => {
-    const line = getRandomItem(lines);
-    setType(line);
+  const generatedBeyblade = getGeneratedBeyblade(id);
+
+  const handleRoll = async () => {
+    const line = await rollSimulator(lines);
+    dispatch(addTypeToGeneratedBeyblade(id, line));
   };
 
-  if (type) {
+  if (generatedBeyblade.type) {
     return (
       <div>
-        Rolled a {type}
-        <ChangeStepButton step={stepMap[type]} changeStep={changeCurrentStep} />
+        Rolled a {generatedBeyblade.type}
+        <ChangeStepButton
+          step={stepMap[generatedBeyblade.type]}
+          changeStep={changeCurrentStep}
+        />
       </div>
     );
   }
