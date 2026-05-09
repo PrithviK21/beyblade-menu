@@ -1,7 +1,14 @@
 // FIXME: Fails for Pegasus 145 RF
 
 import { remap } from "../beybladeParser";
-import type { IBeybladeData, IPartList, IBeyblade, BeyParts } from "../model";
+import { RATCHET_INTEGRATED_BITS } from "../constants";
+import type {
+  IBeybladeData,
+  IPartList,
+  IBeyblade,
+  BeyParts,
+  IGeneratedBeyblade,
+} from "../model";
 
 // TODO: Remove duplicates and undefined values
 const generatePartList = (beyblades: IBeybladeData) => {
@@ -100,7 +107,7 @@ const getRandomItem = (arr: string[]): string => {
   return arr[randIndex];
 };
 
-const rollSimulator = async (arr): Promise<string> => {
+const rollSimulator = async (arr: string[]): Promise<string> => {
   return new Promise((resolve) =>
     setTimeout(() => {
       resolve(getRandomItem(arr));
@@ -108,4 +115,107 @@ const rollSimulator = async (arr): Promise<string> => {
   );
 };
 
-export { generatePartList, getRandomItem, rollSimulator };
+const generateXCombo = (partList: IPartList) => {
+  // choose line
+  // choose blade if ux bx. choose lock chip main blade assist blade if cx
+  // choose ratchet. if RIB, skip bit
+  // choose bit
+  const lines = ["UX", "BX", "CX"];
+  const chosenLine = getRandomItem(lines);
+  let generatedBeyblade: IGeneratedBeyblade = {
+    type: chosenLine,
+    parts: [],
+  };
+  switch (chosenLine) {
+    case "UX": {
+      const bladeList = partList.X.UX.BLADE;
+      generatedBeyblade.parts.push({
+        type: "UX_BLADE",
+        name: getRandomItem(bladeList),
+      });
+      break;
+    }
+    case "BX": {
+      const bladeList = partList.X.BX.BLADE;
+      generatedBeyblade.parts.push({
+        type: "BX_BLADE",
+        name: getRandomItem(bladeList),
+      });
+      break;
+    }
+    case "CX": {
+      const lockChipList = partList.X.CX.LOCK_CHIP;
+      const mainBladeList = partList.X.CX.MAIN_BLADE;
+      const assistBladeList = partList.X.CX.ASSIST_BLADE;
+      generatedBeyblade.parts.push({
+        type: "LOCK_CHIP",
+        name: getRandomItem(lockChipList),
+      });
+      generatedBeyblade.parts.push({
+        type: "MAIN_BLADE",
+        name: getRandomItem(mainBladeList),
+      });
+      generatedBeyblade.parts.push({
+        type: "ASSIST_BLADE",
+        name: getRandomItem(assistBladeList),
+      });
+    }
+  }
+  const ratchetList = partList.X.COMMON.RATCHET;
+  const randomRatchet = getRandomItem(ratchetList);
+  generatedBeyblade.parts.push({
+    type: "RATCHET",
+    name: randomRatchet,
+  });
+  if (RATCHET_INTEGRATED_BITS.includes(randomRatchet)) return generatedBeyblade;
+
+  const bitList = partList.X.COMMON.BIT;
+  const randomBit = getRandomItem(bitList);
+  generatedBeyblade.parts.push({
+    type: "BIT",
+    name: randomBit,
+  });
+
+  return generatedBeyblade;
+};
+const generateMFCombo = (partList: IPartList) => {
+  let generatedBeyblade: IGeneratedBeyblade = {
+    type: "MF",
+    parts: [],
+  };
+
+  const energyRingList = partList.MF.ENERGY_RING;
+  const randomEnergyRing = getRandomItem(energyRingList);
+  generatedBeyblade.parts.push({
+    type: "ENERGY_RING",
+    name: randomEnergyRing,
+  });
+  const fusionWheelList = partList.MF.FUSION_WHEEL;
+  const randomFusionWheel = getRandomItem(fusionWheelList);
+  generatedBeyblade.parts.push({
+    type: "FUSION_WHEEL",
+    name: randomFusionWheel,
+  });
+  const spinTrackList = partList.MF.SPIN_TRACK;
+  const randomSpinTrack = getRandomItem(spinTrackList);
+  generatedBeyblade.parts.push({
+    type: "SPIN_TRACK",
+    name: randomSpinTrack,
+  });
+  const performanceTipList = partList.MF.PERFORMANCE_TIP;
+  const randomPerformanceTip = getRandomItem(performanceTipList);
+  generatedBeyblade.parts.push({
+    type: "PERFORMANCE_TIP",
+    name: randomPerformanceTip,
+  });
+
+  return generatedBeyblade;
+};
+
+export {
+  generatePartList,
+  getRandomItem,
+  rollSimulator,
+  generateMFCombo,
+  generateXCombo,
+};

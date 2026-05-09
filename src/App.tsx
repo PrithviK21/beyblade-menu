@@ -2,10 +2,9 @@ import { useState } from "react";
 import "./App.css";
 import GenSelect from "./components/GenSelect";
 import StateMachine from "./components/StateMachine";
-import {
-  resetState,
-  useBeybladeDataContext,
-} from "./context/beybladeDataContext";
+import { useBeybladeDataContext } from "./context/beybladeDataContext";
+import Result from "./components/Result";
+import { resetState } from "./context/reducer";
 
 /**
  * What is my vision?
@@ -37,13 +36,33 @@ function App() {
   if (!gen) {
     return <GenSelect changeCurrentStep={setGen} />;
   }
+  if (gen === "instant") {
+    return (
+      <>
+        <div className="main-container">
+          <Result id={1} />
+          <Result id={2} />
+        </div>
+        <button
+          onClick={() => {
+            dispatch(resetState());
+            setGen("");
+          }}
+        >
+          Restart
+        </button>
+      </>
+    );
+  }
   return (
-    <div>
-      <div>
-        <StateMachine firstStep={gen} id={1} />
-      </div>
-      <div>
-        <StateMachine firstStep={gen} id={2} />
+    <>
+      <div className="main-container">
+        <div>
+          <StateMachine firstStep={gen} id={1} />
+        </div>
+        <div>
+          <StateMachine firstStep={gen} id={2} />
+        </div>
       </div>
       <button
         onClick={() => {
@@ -53,7 +72,7 @@ function App() {
       >
         Restart
       </button>
-    </div>
+    </>
   );
 }
 

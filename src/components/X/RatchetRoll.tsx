@@ -1,20 +1,21 @@
 import { STEPS } from "../../constants";
-import {
-  useBeybladeDataContext,
-  addPartToGeneratedBeyblade,
-} from "../../context/beybladeDataContext";
+import { useBeybladeDataContext } from "../../context/beybladeDataContext";
 import { rollSimulator } from "../../utils/partsUtils";
 import { ChangeStepButton } from "../common/ChangeStepsButton";
 import type { RollerComponentProps } from "../../model";
+import { useState } from "react";
+import { addPartToGeneratedBeyblade } from "../../context/reducer";
 
 // If Ratchet Integrated Bit, skip bit step
 function RatchetRoll({ id, changeCurrentStep }: RollerComponentProps) {
   const { partsList, dispatch, getLatestBeybladePart } =
     useBeybladeDataContext();
+  const [clicked, setClicked] = useState(false);
 
   const ratchets = partsList.X.COMMON.RATCHET;
 
   const handleRoll = async () => {
+    setClicked(true);
     const selectedRatchet = await rollSimulator(ratchets);
     dispatch(
       addPartToGeneratedBeyblade(id, {
@@ -46,7 +47,9 @@ function RatchetRoll({ id, changeCurrentStep }: RollerComponentProps) {
           <li>{ratchet}</li>
         ))}
       </ol>
-      <button onClick={handleRoll}>Roll for a Ratchet</button>
+      <button onClick={handleRoll} disabled={clicked}>
+        Roll for Ratchet
+      </button>
     </div>
   );
 }

@@ -1,11 +1,9 @@
 import { ChangeStepButton } from "../common/ChangeStepsButton";
 import { rollSimulator } from "../../utils/partsUtils";
 import { STEPS } from "../../constants";
-import {
-  addTypeToGeneratedBeyblade,
-  useBeybladeDataContext,
-} from "../../context/beybladeDataContext";
+import { useBeybladeDataContext } from "../../context/beybladeDataContext";
 import type { RollerComponentProps } from "../../model";
+import { addTypeToGeneratedBeyblade } from "../../context/reducer";
 
 const lines = ["UX", "BX", "CX"];
 const stepMap: Record<string, string> = {

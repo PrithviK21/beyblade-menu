@@ -38,3 +38,5 @@ export const isValidStep = (step: string, allowedSteps: any) => {
   }
   return false;
 };
+
+export const RATCHET_INTEGRATED_BITS = ["Tr"];

@@ -1,9 +1,8 @@
-import {
-  useBeybladeDataContext,
-  addPartToGeneratedBeyblade,
-} from "../../context/beybladeDataContext";
+import { useState } from "react";
+import { useBeybladeDataContext } from "../../context/beybladeDataContext";
 import { rollSimulator } from "../../utils/partsUtils";
 import { ChangeStepButton } from "../common/ChangeStepsButton";
+import { addPartToGeneratedBeyblade } from "../../context/reducer";
 
 type RollWrapperProps = {
   id: 1 | 2;
@@ -23,8 +22,9 @@ function RollWrapper({
   nextStep,
 }: RollWrapperProps) {
   const { dispatch, getLatestBeybladePart } = useBeybladeDataContext();
-
+  const [clicked, setClicked] = useState(false);
   const handleRoll = async () => {
+    setClicked(true);
     const selectedBit = await rollSimulator(partList);
     dispatch(
       addPartToGeneratedBeyblade(id, {
@@ -52,7 +52,9 @@ function RollWrapper({
           <li>{part}</li>
         ))}
       </ol>
-      <button onClick={handleRoll}>Roll for {partLabel}</button>
+      <button onClick={handleRoll} disabled={clicked}>
+        Roll for {partLabel}
+      </button>
     </div>
   );
 }
