@@ -1,8 +1,9 @@
 import { STEPS } from "../../constants";
 import { useBeybladeDataContext } from "../../context/beybladeDataContext";
+import type { RollerComponentProps } from "../../model";
 import RollWrapper from "../common/RollWrapper";
 
-function MainBladeRoll({ id, changeCurrentStep }) {
+function MainBladeRoll({ id, changeCurrentStep }: RollerComponentProps) {
   const { partsList } = useBeybladeDataContext();
 
   return (

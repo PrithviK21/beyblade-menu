@@ -80,6 +80,13 @@ type IPartList = {
   };
 };
 
+type RollerComponentProps = {
+  id: 1 | 2;
+  changeCurrentStep: ChangeCurrentStepFunc;
+};
+
+type ChangeCurrentStepFunc = (step: string) => void;
+
 export type {
   IparsedCSV,
   IBeybladeData,
@@ -87,4 +94,6 @@ export type {
   IBeybladeType,
   BeyParts,
   IPartList,
+  RollerComponentProps,
+  ChangeCurrentStepFunc,
 };

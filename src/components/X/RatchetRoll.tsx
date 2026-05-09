@@ -1,5 +1,3 @@
-import type { type } from "os";
-import React from "react";
 import { STEPS } from "../../constants";
 import {
   useBeybladeDataContext,
@@ -7,9 +5,10 @@ import {
 } from "../../context/beybladeDataContext";
 import { rollSimulator } from "../../utils/partsUtils";
 import { ChangeStepButton } from "../common/ChangeStepsButton";
+import type { RollerComponentProps } from "../../model";
 
 // If Ratchet Integrated Bit, skip bit step
-function RatchetRoll({ id, changeCurrentStep }) {
+function RatchetRoll({ id, changeCurrentStep }: RollerComponentProps) {
   const { partsList, dispatch, getLatestBeybladePart } =
     useBeybladeDataContext();
 

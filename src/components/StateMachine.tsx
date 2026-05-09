@@ -13,7 +13,12 @@ import FusionWheelRoll from "./MF/FusionWheelRoll";
 import SpinTrackRoll from "./MF/SpinTrackRoll";
 import PerformanceTipRoll from "./MF/PerformanceTipRoll";
 
-function StateMachine({ firstStep, id }) {
+type StateMachineProps = {
+  firstStep: string;
+  id: 1 | 2;
+};
+
+function StateMachine({ firstStep, id }: StateMachineProps) {
   const [currentStep, setCurrentStep] = useState(firstStep);
   const changeCurrentStep = (newStep: string) => {
     if (isValidStep(newStep, STEPS)) {

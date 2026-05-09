@@ -1,8 +1,12 @@
-import React from "react";
 import { ChangeStepButton } from "./common/ChangeStepsButton";
 import { STEPS } from "../constants";
+import type { ChangeCurrentStepFunc } from "../model";
 
-function GenSelect({ changeCurrentStep }) {
+function GenSelect({
+  changeCurrentStep,
+}: {
+  changeCurrentStep: ChangeCurrentStepFunc;
+}) {
   return (
     <div>
       Select your Generation

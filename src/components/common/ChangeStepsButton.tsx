@@ -1,12 +1,14 @@
+type ChangeStepsButtonProps = {
+  step: string;
+  changeStep: (step: string) => void;
+  overrideText?: string;
+};
+
 export const ChangeStepButton = ({
   step,
   changeStep,
   overrideText = "",
-}: {
-  step: string;
-  changeStep: (step: string) => void;
-  overrideText?: string;
-}) => {
+}: ChangeStepsButtonProps) => {
   return (
     <button onClick={() => changeStep(step)}>{overrideText || step}</button>
   );

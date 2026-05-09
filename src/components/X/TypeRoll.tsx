@@ -1,11 +1,11 @@
-import React, { useState } from "react";
 import { ChangeStepButton } from "../common/ChangeStepsButton";
-import { getRandomItem, rollSimulator } from "../../utils/partsUtils";
+import { rollSimulator } from "../../utils/partsUtils";
 import { STEPS } from "../../constants";
 import {
   addTypeToGeneratedBeyblade,
   useBeybladeDataContext,
 } from "../../context/beybladeDataContext";
+import type { RollerComponentProps } from "../../model";
 
 const lines = ["UX", "BX", "CX"];
 const stepMap: Record<string, string> = {
@@ -14,7 +14,7 @@ const stepMap: Record<string, string> = {
   CX: STEPS.X.CX.LOCK_CHIP,
 };
 
-function TypeRoll({ id, changeCurrentStep }) {
+function TypeRoll({ id, changeCurrentStep }: RollerComponentProps) {
   const { getGeneratedBeyblade, dispatch } = useBeybladeDataContext();
 
   const generatedBeyblade = getGeneratedBeyblade(id);

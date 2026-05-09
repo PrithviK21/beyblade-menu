@@ -1,7 +1,6 @@
-import React from "react";
 import { useBeybladeDataContext } from "../context/beybladeDataContext";
 
-function Result({ id }) {
+function Result({ id }: { id: 1 | 2 }) {
   const { getGeneratedBeyblade } = useBeybladeDataContext();
 
   const generatedBeyblade = getGeneratedBeyblade(id);

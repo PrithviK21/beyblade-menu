@@ -1,10 +1,18 @@
-import { STEPS } from "../../constants";
 import {
   useBeybladeDataContext,
   addPartToGeneratedBeyblade,
 } from "../../context/beybladeDataContext";
 import { rollSimulator } from "../../utils/partsUtils";
 import { ChangeStepButton } from "../common/ChangeStepsButton";
+
+type RollWrapperProps = {
+  id: 1 | 2;
+  changeCurrentStep: (step: string) => void;
+  partList: string[];
+  partType: string;
+  partLabel: string;
+  nextStep: string;
+};
 
 function RollWrapper({
   id,
@@ -13,7 +21,7 @@ function RollWrapper({
   partType,
   partLabel,
   nextStep,
-}) {
+}: RollWrapperProps) {
   const { dispatch, getLatestBeybladePart } = useBeybladeDataContext();
 
   const handleRoll = async () => {

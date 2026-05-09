@@ -1,9 +1,9 @@
-import React from "react";
 import { STEPS } from "../../constants";
 import { useBeybladeDataContext } from "../../context/beybladeDataContext";
 import RollWrapper from "../common/RollWrapper";
+import type { RollerComponentProps } from "../../model";
 
-function SpinTrackRoll({ id, changeCurrentStep }) {
+function SpinTrackRoll({ id, changeCurrentStep }: RollerComponentProps) {
   const { partsList } = useBeybladeDataContext();
 
   return (
