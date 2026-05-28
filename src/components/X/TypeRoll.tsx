@@ -1,16 +1,11 @@
 import { ChangeStepButton } from "../common/ChangeStepsButton";
 import { rollSimulator } from "../../utils/partsUtils";
-import { STEPS } from "../../constants";
 import { useBeybladeDataContext } from "../../context/beybladeDataContext";
 import type { RollerComponentProps } from "../../model";
 import { addTypeToGeneratedBeyblade } from "../../context/reducer";
+import { stepMap } from "../../constants";
 
 const lines = ["UX", "BX", "CX"];
-const stepMap: Record<string, string> = {
-  UX: STEPS.X.UX.BLADE,
-  BX: STEPS.X.BX.BLADE,
-  CX: STEPS.X.CX.LOCK_CHIP,
-};
 
 function TypeRoll({ id, changeCurrentStep }: RollerComponentProps) {
   const { getGeneratedBeyblade, dispatch } = useBeybladeDataContext();

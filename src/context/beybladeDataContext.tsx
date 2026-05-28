@@ -23,6 +23,7 @@ type IBeybladeContext = {
   getLatestBeybladePart: (id: 1 | 2) => IPart | undefined;
   // setGeneratedBeybladeType: (id: string, type: string) => void;
   dispatch: ActionDispatch<any>;
+  usedParts: string[];
 };
 
 const BEYBLADE_X = "Beyblade X";
@@ -52,6 +53,8 @@ export const BeybladeDataProvider = ({ children }: React.PropsWithChildren) => {
     return generatePartList(beybladeData);
   }, [beybladeData.length]);
 
+  const usedParts = state.usedParts;
+
   return (
     <BeybladeDataContext
       value={{
@@ -60,6 +63,7 @@ export const BeybladeDataProvider = ({ children }: React.PropsWithChildren) => {
         dispatch,
         getGeneratedBeyblade,
         getLatestBeybladePart,
+        usedParts,
       }}
     >
       {children}

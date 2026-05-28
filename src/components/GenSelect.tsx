@@ -13,15 +13,27 @@ function GenSelect({
   const { dispatch, partsList } = useBeybladeDataContext();
 
   const handleXClick = () => {
-    const randomBeyblade1 = generateXCombo(partsList);
-    const randomBeyblade2 = generateXCombo(partsList);
+    const { generatedBeyblade: randomBeyblade1, usedParts } = generateXCombo(
+      partsList,
+      [],
+    );
+    const { generatedBeyblade: randomBeyblade2 } = generateXCombo(
+      partsList,
+      usedParts,
+    );
     dispatch(setGeneratedBeyblade(1, randomBeyblade1));
     dispatch(setGeneratedBeyblade(2, randomBeyblade2));
     changeCurrentStep("instant");
   };
   const handleMFClick = () => {
-    const randomBeyblade1 = generateMFCombo(partsList);
-    const randomBeyblade2 = generateMFCombo(partsList);
+    const { generatedBeyblade: randomBeyblade1, usedParts } = generateMFCombo(
+      partsList,
+      [],
+    );
+    const { generatedBeyblade: randomBeyblade2 } = generateMFCombo(
+      partsList,
+      usedParts,
+    );
     dispatch(setGeneratedBeyblade(1, randomBeyblade1));
     dispatch(setGeneratedBeyblade(2, randomBeyblade2));
     changeCurrentStep("instant");

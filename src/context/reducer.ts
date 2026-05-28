@@ -39,11 +39,15 @@ export const initialReducerState = {
       parts: [],
     } as IGeneratedBeyblade,
   },
+  usedParts: [] as string[],
 };
-export const reducer = (state, action) => {
+export const reducer = (
+  state: typeof initialReducerState,
+  action: { payload: any; type: string },
+) => {
   switch (action.type) {
     case "add_part_to_generated_beyblade": {
-      const { id, part } = action.payload;
+      const { id, part } = action.payload as { id: 1 | 2; part: IPart };
       if (!id || !part) return state;
       return {
         generatedBeyblades: {
@@ -53,12 +57,14 @@ export const reducer = (state, action) => {
             parts: [...state.generatedBeyblades[id].parts, part],
           },
         },
+        usedParts: [...state.usedParts, part.name],
       };
     }
     case "add_type_to_generated_beyblade": {
-      const { id, type } = action.payload;
+      const { id, type } = action.payload as { id: 1 | 2; type: string };
       if (!id || !type) return state;
       return {
+        ...state,
         generatedBeyblades: {
           ...state.generatedBeyblades,
           [id]: {
@@ -74,6 +80,7 @@ export const reducer = (state, action) => {
     case "set_generated_beyblade": {
       const { id, beyblade } = action.payload;
       return {
+        ...state,
         generatedBeyblades: {
           ...state.generatedBeyblades,
           [id]: beyblade,

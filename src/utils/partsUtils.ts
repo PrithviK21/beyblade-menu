@@ -1,7 +1,7 @@
 // FIXME: Fails for Pegasus 145 RF
 
 import { remap } from "../beybladeParser";
-import { RATCHET_INTEGRATED_BITS } from "../constants";
+import { MF_4D_TIPS, RATCHET_INTEGRATED_BITS } from "../constants";
 import type {
   IBeybladeData,
   IPartList,
@@ -115,7 +115,7 @@ const rollSimulator = async (arr: string[]): Promise<string> => {
   );
 };
 
-const generateXCombo = (partList: IPartList) => {
+const generateXCombo = (partList: IPartList, partsToSkip: string[]) => {
   // choose line
   // choose blade if ux bx. choose lock chip main blade assist blade if cx
   // choose ratchet. if RIB, skip bit
@@ -126,12 +126,21 @@ const generateXCombo = (partList: IPartList) => {
     type: chosenLine,
     parts: [],
   };
+  let usedParts = [] as string[];
+  const getRandomItemAndAddToUsed = (list: string[]) => {
+    const randomPart = getRandomItem(
+      list.filter((p) => !partsToSkip.includes(p)),
+    );
+    usedParts.push(randomPart);
+    return randomPart;
+  };
+
   switch (chosenLine) {
     case "UX": {
       const bladeList = partList.X.UX.BLADE;
       generatedBeyblade.parts.push({
         type: "UX_BLADE",
-        name: getRandomItem(bladeList),
+        name: getRandomItemAndAddToUsed(bladeList),
       });
       break;
     }
@@ -139,7 +148,7 @@ const generateXCombo = (partList: IPartList) => {
       const bladeList = partList.X.BX.BLADE;
       generatedBeyblade.parts.push({
         type: "BX_BLADE",
-        name: getRandomItem(bladeList),
+        name: getRandomItemAndAddToUsed(bladeList),
       });
       break;
     }
@@ -149,67 +158,91 @@ const generateXCombo = (partList: IPartList) => {
       const assistBladeList = partList.X.CX.ASSIST_BLADE;
       generatedBeyblade.parts.push({
         type: "LOCK_CHIP",
-        name: getRandomItem(lockChipList),
+        name: getRandomItemAndAddToUsed(lockChipList),
       });
       generatedBeyblade.parts.push({
         type: "MAIN_BLADE",
-        name: getRandomItem(mainBladeList),
+        name: getRandomItemAndAddToUsed(mainBladeList),
       });
       generatedBeyblade.parts.push({
         type: "ASSIST_BLADE",
-        name: getRandomItem(assistBladeList),
+        name: getRandomItemAndAddToUsed(assistBladeList),
       });
     }
   }
   const ratchetList = partList.X.COMMON.RATCHET;
-  const randomRatchet = getRandomItem(ratchetList);
+  const randomRatchet = getRandomItemAndAddToUsed(ratchetList);
   generatedBeyblade.parts.push({
     type: "RATCHET",
     name: randomRatchet,
   });
-  if (RATCHET_INTEGRATED_BITS.includes(randomRatchet)) return generatedBeyblade;
+  if (RATCHET_INTEGRATED_BITS.includes(randomRatchet))
+    return { generatedBeyblade, usedParts };
 
   const bitList = partList.X.COMMON.BIT;
-  const randomBit = getRandomItem(bitList);
+  const randomBit = getRandomItemAndAddToUsed(bitList);
   generatedBeyblade.parts.push({
     type: "BIT",
     name: randomBit,
   });
 
-  return generatedBeyblade;
+  return { generatedBeyblade, usedParts };
 };
-const generateMFCombo = (partList: IPartList) => {
+const generateMFCombo = (partList: IPartList, partsToSkip: string[]) => {
   let generatedBeyblade: IGeneratedBeyblade = {
     type: "MF",
     parts: [],
   };
+  let usedParts: string[] = [];
+
+  const getRandomItemAndAddToUsed = (list: string[]) => {
+    const randomPart = getRandomItem(
+      list.filter((p) => !partsToSkip.includes(p)),
+    );
+    usedParts.push(randomPart);
+    return randomPart;
+  };
 
   const energyRingList = partList.MF.ENERGY_RING;
-  const randomEnergyRing = getRandomItem(energyRingList);
+  const randomEnergyRing = getRandomItemAndAddToUsed(energyRingList);
   generatedBeyblade.parts.push({
     type: "ENERGY_RING",
     name: randomEnergyRing,
   });
   const fusionWheelList = partList.MF.FUSION_WHEEL;
-  const randomFusionWheel = getRandomItem(fusionWheelList);
+  const randomFusionWheel = getRandomItemAndAddToUsed(fusionWheelList);
   generatedBeyblade.parts.push({
     type: "FUSION_WHEEL",
     name: randomFusionWheel,
   });
   const spinTrackList = partList.MF.SPIN_TRACK;
-  const randomSpinTrack = getRandomItem(spinTrackList);
+  const randomSpinTrack = getRandomItemAndAddToUsed(spinTrackList);
   generatedBeyblade.parts.push({
     type: "SPIN_TRACK",
     name: randomSpinTrack,
   });
+
+  if (MF_4D_TIPS.includes(randomSpinTrack)) {
+    return { generatedBeyblade, usedParts };
+  }
+
   const performanceTipList = partList.MF.PERFORMANCE_TIP;
-  const randomPerformanceTip = getRandomItem(performanceTipList);
+  const randomPerformanceTip = getRandomItemAndAddToUsed(performanceTipList);
   generatedBeyblade.parts.push({
     type: "PERFORMANCE_TIP",
     name: randomPerformanceTip,
   });
 
-  return generatedBeyblade;
+  return { generatedBeyblade, usedParts };
+};
+
+export const getNestedValue = (
+  obj: Record<string, any>,
+  path: string,
+): string[] => {
+  return path
+    .split(".")
+    .reduce((current, key) => current?.[key], obj) as string[];
 };
 
 export {
