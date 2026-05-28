@@ -26,8 +26,8 @@ type IBeybladeContext = {
   usedParts: string[];
 };
 
-const BEYBLADE_X = "Beyblade X";
-const METAL_SAGA = "Metal Saga";
+// const BEYBLADE_X = "Beyblade X";
+// const METAL_SAGA = "Metal Saga";
 
 const BeybladeDataContext = createContext<IBeybladeContext>(
   {} as IBeybladeContext,

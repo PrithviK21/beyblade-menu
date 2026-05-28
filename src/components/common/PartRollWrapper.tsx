@@ -27,7 +27,6 @@ function RollWrapper({
   id,
   changeCurrentStep,
   partsListPath,
-  partType,
   partLabel,
   nextStep,
   nextStepCallback,

@@ -87,5 +87,7 @@ export const reducer = (
         },
       };
     }
+    default:
+      return state;
   }
 };
